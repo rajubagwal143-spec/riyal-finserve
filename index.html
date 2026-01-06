@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Riyal FinServe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+}
+.container{
+    max-width:420px;
+    margin:30px auto;
+}
+.card{
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    margin-bottom:25px;
+}
+h2{text-align:center;}
+label{display:block;margin-top:10px;}
+input{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+button{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+th,td{
+    border:1px solid #ccc;
+    padding:8px;
+    font-size:13px;
+}
+th{background:#eee;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- USER FORM -->
+<div class="card">
+<h2>Riyal FinServe</h2>
+
+<input id="name" placeholder="Full Name">
+<input id="email" placeholder="Email">
+<input id="phone" placeholder="Phone">
+<input id="amount" placeholder="Loan Amount">
+<input id="salary" placeholder="Salary">
+
+<button onclick="saveData()">Apply Now</button>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="card">
+<h2>Admin Login</h2>
+<input id="adminUser" placeholder="Username">
+<input id="adminPass" type="password" placeholder="Password">
+<button onclick="adminLogin()">Login</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="card" id="adminPanel" style="display:none;">
+<h2>Loan Applications</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Amount</th>
+<th>Salary</th>
+</tr>
+</thead>
+<tbody id="dataTable"></tbody>
+</table>
+</div>
+
+</div>
+
+<script>
+function saveData(){
+    let data = {
+        name: name.value,
+        email: email.value,
+        phone: phone.value,
+        amount: amount.value,
+        salary: salary.value
+    };
+
+    let all = JSON.parse(localStorage.getItem("loans")) || [];
+    all.push(data);
+    localStorage.setItem("loans", JSON.stringify(all));
+
+    alert("Application Submitted!");
+}
+
+function adminLogin(){
+    if(adminUser.value=="admin" && adminPass.value=="1234"){
+        document.getElementById("adminPanel").style.display="block";
+        loadData();
+    }else{
+        alert("Wrong Login");
+    }
+}
+
+function loadData(){
+    let all = JSON.parse(localStorage.getItem("loans")) || [];
+    let html="";
+    all.forEach(d=>{
+        html+=`<tr>
+        <td>${d.name}</td>
+        <td>${d.email}</td>
+        <td>${d.phone}</td>
+        <td>${d.amount}</td>
+        <td>${d.salary}</td>
+        </tr>`;
+    });
+    dataTable.innerHTML=html;
+}
+</script>
+
+</body>
+</html>
